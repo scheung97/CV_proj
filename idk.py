@@ -29,11 +29,16 @@ while rval:
     '''
     converts input image to gray
     '''
-    no_blur, blur = fil.gauss_blur_filter(frame)
-    #gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY  #filtering already converts to gray
-    cv2.imshow("no blur ", no_blur)
-    cv2.imshow("blur", blur)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  #filtering already converts to gray
 
+    gauss_blurred_img = fil.gauss_blur_filter(gray)
+    horiz_filt_img = fil.horizontal_filter(gauss_blurred_img)
+    vert_filt_img = fil.vertical_filter(gauss_blurred_img)
+
+    cv2.imshow("no blur ", gray)
+    cv2.imshow("blur", gauss_blurred_img)
+    cv2.imshow("horizontally filtered", horiz_filt_img)
+    cv2.imshow("vertically filtered", vert_filt_img)
 
 
     key = cv2.waitKey(20) #waits for 20ms for keyboard event
