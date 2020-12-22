@@ -25,10 +25,17 @@ else:
 while rval:
     cv2.imshow("cam", frame)
     rval, frame = vc.read()
-    own = fil.filtering(frame)
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    cv2.imshow("gray", gray)
-    cv2.imshow("own", own)
+
+    '''
+    converts input image to gray
+    '''
+    no_blur, blur = fil.gauss_blur_filter(frame)
+    #gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY  #filtering already converts to gray
+    cv2.imshow("no blur ", no_blur)
+    cv2.imshow("blur", blur)
+
+
+
     key = cv2.waitKey(20) #waits for 20ms for keyboard event
     if key == 27: #ESC key
         break
