@@ -7,6 +7,9 @@ def gauss_blur_filter(frame):
     :Param: gray-scale frame data (type: np.ndarray)
     :Return: None (place holder right now)
     """
+
+    #size of this filter will impact the detector
+
     try:
         frame = frame / 255 #normalize image data
         """
@@ -19,7 +22,7 @@ def gauss_blur_filter(frame):
         #gray = np.array(0.2989*frame[:,:,0] + 0.587*frame[:,:,1] + 0.114*frame[:,:,2] )#a little darker than the cv2 function
 
         #convolution to apply gaussian blur
-        gaussian_blur = (np.array([[1,4,1],[4,8,4],[1,4,1]])) *(1/28)
+        gaussian_blur = (np.array([[1,4,1],[4,8,4],[1,4,1]])) *(1/28)  #maybe increase the size to decrease effects of noise
         blurred_img = sig.convolve2d(frame, gaussian_blur)
 
         #edge detection
@@ -27,13 +30,13 @@ def gauss_blur_filter(frame):
         return blurred_img
     except TypeError as e:
         print(e)
-
+"""
 def horizontal_filter(frame):
-    """
-    Creates a gaussian blurred image to smooth the image
+    ''''
+    Creates horizontal filter that detects horizontal lines
     :Param: frame data (type: np.ndarray)
     :Return: None (place holder right now)
-    """
+    '''
     #horizontal_filter = np.array([[1,1,1],[0,0,0],[-1,-1,-1]])
     #horizontal_filter = (np.array([[1,1,1],[0,0,0],[-1,-1,-1]]))*(1/6) #prewit operator
     horizontal_filter = (np.array([[1,2,1],[0,0,0],[-1,-2,-1]]))*(1/4) #sobel operator
@@ -42,11 +45,11 @@ def horizontal_filter(frame):
     return filtered_image
 
 def vertical_filter(frame):
-    """
-    Creates a gaussian blurred image to smooth the image
+    '''
+    Creates vertical filter that detects vertical lines
     :Param: frame data (type: np.ndarray)
     :Return: None (place holder right now)
-    """
+    '''
 
     #vertical_filter = np.array([[-1,0,1],[-1,0,1],[-1,0,1]])
     #vertical_filter = (np.array([[-1,0,1],[-1,0,1],[-1,0,1]]))*(1/6) #prewitt operator
@@ -54,3 +57,38 @@ def vertical_filter(frame):
 
     filtered_image = sig.convolve2d(frame, vertical_filter)
     return filtered_image
+"""
+
+#Canny Edge Detector
+def cannyEdgeDetector(frame):
+
+    ############################################################################
+    #Horizontal Sobel filter
+    ############################################################################
+
+    #horizontal_filter = np.array([[1,1,1],[0,0,0],[-1,-1,-1]])
+    #horizontal_filter = (np.array([[1,1,1],[0,0,0],[-1,-1,-1]]))*(1/6) #prewit operator
+    horizontal_filter = (np.array([[1,2,1],[0,0,0],[-1,-2,-1]]))*(1/4) #sobel operator
+
+    horizontal = sig.convolve2d(frame, horizontal_filter)
+
+    ############################################################################
+    #Vertical Sobel filter
+    ############################################################################
+
+    #vertical_filter = np.array([[-1,0,1],[-1,0,1],[-1,0,1]])
+    #vertical_filter = (np.array([[-1,0,1],[-1,0,1],[-1,0,1]]))*(1/6) #prewitt operator
+    vertical_filter = (np.array([[-1,0,1],[-2,0,2],[-1,0,1]]))*(1/4) #sobel operator
+
+    vertical = sig.convolve2d(frame, vertical_filter)
+
+    ############################################################################
+    #Find Intensity Gradients
+    ############################################################################
+    magnitude = np.sqrt((horizontal**2)+(vertical**2))
+    direction = np.arctan(vertical/horizontal)
+
+    ############################################################################
+    #Non-maximum Supression
+    ############################################################################
+    return magnitude, direction

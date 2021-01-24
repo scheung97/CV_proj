@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import cv2
 import numpy as np
 import filtering as fil
@@ -13,6 +15,8 @@ simpleitk
 
 """
 
+
+import nms
 #part 1: connect webcam to python
 #part 2: handle image processing for detection
 
@@ -26,20 +30,20 @@ while rval:
     cv2.imshow("cam", frame)
     rval, frame = vc.read()
 
-    '''
+    """
     converts input image to gray
-    '''
+    """
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  #filtering already converts to gray
 
     gauss_blurred_img = fil.gauss_blur_filter(gray)
-    horiz_filt_img = fil.horizontal_filter(gauss_blurred_img)
-    vert_filt_img = fil.vertical_filter(gauss_blurred_img)
+    magnitude, phase = fil.cannyEdgeDetector(gauss_blurred_img)
 
-    cv2.imshow("no blur ", gray)
-    cv2.imshow("blur", gauss_blurred_img)
-    cv2.imshow("horizontally filtered", horiz_filt_img)
-    cv2.imshow("vertically filtered", vert_filt_img)
+    max = nms.maximum(magnitude,phase) #very slow
 
+    #cv2.imshow("blur", gauss_blurred_img) #keeping to check if input img is blurred enough
+    cv2.imshow("mag", magnitude)
+    #cv2.imshow("direction", phase)
+    cv2.imshow("max", max)
 
     key = cv2.waitKey(20) #waits for 20ms for keyboard event
     if key == 27: #ESC key
