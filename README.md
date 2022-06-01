@@ -1,7 +1,7 @@
 # CV_proj
 Current Python-based personal project I am working on to practice and learn new Computer Vision concepts. 
 
-##Goal: Design and create a wearable HUD(Heads-up Display) for navigation directions. 
+## Goal: Design and create a wearable HUD(Heads-up Display) for navigation directions. 
 <br>
 ### Current implementation: 
 System is 100% software based. 
@@ -11,7 +11,7 @@ In the long run, this might not be super accurate. So the introduction of an IMU
 Image filtering functions done in filtering.py. 
 I have transitioned to using library functions instead of using my own algorithms, so filtering.py might need to be removed in the future.
 <br> 
-##To Run: 
+## To Run: 
 clone the repo
 install required libraries: 
 `pip install -r requirements.txt`	
